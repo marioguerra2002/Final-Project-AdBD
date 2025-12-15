@@ -356,7 +356,7 @@ Este proyecto ha sido desarrollado como trabajo final de la asignatura de Admini
 
 - **Mario Guerra Pérez** - [GitHub](https://github.com/marioguerra2002)
 - **Víctor Rodríguez Dorta** - [GitHub](https://github.com/alu0101540153)
-- **Daniel Marhuenda Guillen** - [GitHub] (https://github.com/alu0101540153)
+- **Daniel Marhuenda Guillen** - [GitHub](https://github.com/alu0101540153)
 
 ## 📝 Licencia
 
