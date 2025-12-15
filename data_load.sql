@@ -1,12 +1,3 @@
-/* 
-   SCRIPT DE CARGA DE DATOS DE EJEMPLO
-   Orden de inserción: 
-   1. Tablas independientes (Salas, Materiales, Tratamientos...)
-   2. Personas (Profesionales, Pacientes)
-   3. Detalles de Personas (Teléfonos, Especialidades, Modos de pago)
-   4. Operativa (Citas, Intervenciones, Consumos)
-*/
-
 -- Limpieza previa de datos (para evitar duplicados al probar)
 TRUNCATE TABLE TRATAMIENTO_INTERVENCION_MATERIAL CASCADE;
 TRUNCATE TABLE TRATAMIENTO_INTERVENCION CASCADE;
@@ -24,99 +15,92 @@ TRUNCATE TABLE TELEFONO_PACIENTE CASCADE;
 TRUNCATE TABLE PACIENTE CASCADE;
 TRUNCATE TABLE TRATAMIENTO CASCADE;
 
+-- =====================================
+-- PACIENTES
+-- =====================================
+INSERT INTO PACIENTE (dni, nombre, apellidos, fecha_nacimiento, email, direccion) VALUES
+('11111111A', 'Laura', 'Gómez Martín', '1998-04-22', 'laura@gmail.com', 'Avenida Principal 45'),
+('22222222B', 'Carlos', 'Cliente Paciente', '1990-05-20', 'carlos@mail.com', 'Calle Falsa 123'),
+('33333333C', 'Marta', 'López Ruiz', '1985-11-12', 'marta@gmail.com', 'Calle Real 12')
+ON CONFLICT (dni) DO NOTHING;
 
--- BLOQUE 1: INFRAESTRUCTURA Y CATÁLOGOS (Persona 2 y 3)
+-- TELÉFONOS PACIENTES
+INSERT INTO TELEFONO_PACIENTE (dni_paciente, telefono) VALUES
+('11111111A','600111111'),
+('22222222B','600222222'),
+('33333333C','600333333')
+ON CONFLICT (dni_paciente, telefono) DO NOTHING;
 
--- 1.1 SALAS (Persona 2)
-INSERT INTO SALA (nombre, tipo_sala, planta) VALUES 
-('Box 1 - General', 'Consulta', 1),
-('Box 2 - Ortodoncia', 'Consulta', 1),
-('Quirófano A', 'Cirugía', 2),
-('Sala Rayos X', 'Rayos X', 1);
+-- SALAS
+INSERT INTO SALA (id_sala, nombre, tipo_sala, planta) VALUES
+(1,'Sala 1','Cirugía',0),
+(2,'Sala 2','Revisión',0),
+(3,'Sala 3','Odontología',1)
+ON CONFLICT (id_sala) DO NOTHING;
 
--- 1.2 MATERIALES (Persona 2 - Catálogo)
-INSERT INTO MATERIAL (cod_material, nombre, descripcion, stock_minimo) VALUES 
-('MAT-ANEST', 'Anestesia Lidocaína', 'Ampollas de 2ml', 50),
-('MAT-GUANT', 'Guantes Látex M', 'Caja de 100 unidades', 10),
-('MAT-COMP', 'Composite A2', 'Jeringa de resina', 5),
-('MAT-GASA', 'Gasas Estériles', 'Paquete de 50', 20);
+-- MATERIALES
+INSERT INTO MATERIAL (cod_material, nombre, descripcion, stock_minimo) VALUES
+('MAT-01','Guantes','Guantes estériles',10),
+('MAT-02','Anestesia','Anestesia local',5),
+('MAT-03','Mascarilla','Mascarilla quirúrgica',10)
+ON CONFLICT (cod_material) DO NOTHING;
 
--- 1.3 LOTES (Persona 2 - Stock Físico)
--- Vinculamos lotes a los materiales de arriba
-INSERT INTO LOTE (cod_material, fecha_caducidad, cantidad_actual, fecha_entrada) VALUES 
-('MAT-ANEST', '2026-12-31', 100, '2025-01-10'), -- Lote nuevo
-('MAT-ANEST', '2025-06-30', 20, '2024-05-20'),  -- Lote a punto de caducar
-('MAT-GUANT', '2030-01-01', 500, '2025-02-01'),
-('MAT-COMP', '2025-11-15', 10, '2025-01-15');
+-- TRATAMIENTOS
+INSERT INTO TRATAMIENTO (id_tratamiento, nombre, duracion_estimada) VALUES
+(1,'Limpieza dental',30),
+(2,'Extracción muela',60),
+(3,'Revisión general',20)
+ON CONFLICT (id_tratamiento) DO NOTHING;
 
--- 1.4 TRATAMIENTOS (Persona 3)
-INSERT INTO TRATAMIENTO (nombre, duracion_estimada) VALUES 
-('Limpieza Dental', 30),
-('Empaste Simple', 45),
-('Endodoncia', 90),
-('Extracción', 60);
+-- PROFESIONALES
+INSERT INTO PROFESIONAL (dni,nombre,apellidos,email,fecha_contratacion,salario,tipo_profesional) VALUES
+('44444444D','Ana','Dentista Pérez','ana@mail.com',CURRENT_DATE,2000,'Dentista'),
+('55555555E','Luis','Higienista López','luis@mail.com',CURRENT_DATE,1500,'Higienista')
+ON CONFLICT (dni) DO NOTHING;
 
+-- DENTISTA
+INSERT INTO DENTISTA (dni,num_colegiado,especialidad) VALUES
+('44444444D','D-123','Cirugía')
+ON CONFLICT (dni) DO NOTHING;
 
--- BLOQUE 2: PERSONAL SANITARIO (Persona 2 - Jerarquía)
+-- HIGIENISTA
+INSERT INTO HIGIENISTA (dni,num_titulo_formacion) VALUES
+('55555555E','H-456')
+ON CONFLICT (dni) DO NOTHING;
 
--- 2.1 PROFESIONALES (Padres)
--- Insertamos 3 perfiles diferentes para probar la exclusividad
-INSERT INTO PROFESIONAL (dni, nombre, apellidos, email, salario, tipo_profesional) VALUES 
-('11111111A', 'Juan', 'Pérez Dr.', 'juan.perez@clinica.com', 3500.00, 'Dentista'),
-('22222222B', 'Ana', 'García Hig.', 'ana.garcia@clinica.com', 1800.00, 'Higienista'),
-('33333333C', 'Luis', 'López Aux.', 'luis.lopez@clinica.com', 1400.00, 'Auxiliar');
+-- =====================================
+-- INTERVENCIONES
+-- =====================================
+INSERT INTO INTERVENCION (id_intervencion,nombre,tipo_intervencion,dni_profesional,dni_paciente,id_sala,fecha_hora) VALUES
+(1,'Limpieza inicial','Revisión','55555555E','11111111A',2,CURRENT_TIMESTAMP - INTERVAL '5 days'),
+(2,'Extracción muela','Cirugía','44444444D','22222222B',1,CURRENT_TIMESTAMP - INTERVAL '3 days'),
+(3,'Revisión anual','Revisión','55555555E','11111111A',2,CURRENT_TIMESTAMP - INTERVAL '1 day'),
+(4,'Limpieza preventiva','Revisión','55555555E','33333333C',2,CURRENT_TIMESTAMP + INTERVAL '1 day'),
+(5,'Empaste molar','Tratamiento','44444444D','11111111A',1,CURRENT_TIMESTAMP + INTERVAL '2 day')
+ON CONFLICT (id_intervencion) DO NOTHING;
 
--- 2.2 SUBTIPOS (Hijos - Relación 1:1)
--- Dentista
-INSERT INTO DENTISTA (dni, num_colegiado, especialidad) VALUES 
-('11111111A', 'COL-28001', 'Cirujano Maxilofacial');
+-- TRATAMIENTO_INTERVENCION
+INSERT INTO TRATAMIENTO_INTERVENCION (id_tratamiento,id_intervencion) VALUES
+(1,1),
+(2,2),
+(3,3),
+(1,4),
+(2,5)
+ON CONFLICT (id_tratamiento,id_intervencion) DO NOTHING;
 
--- Higienista
-INSERT INTO HIGIENISTA (dni, num_titulo_formacion) VALUES 
-('22222222B', 'FP-HIG-2020');
+-- TRATAMIENTO_INTERVENCION_MATERIAL
+INSERT INTO TRATAMIENTO_INTERVENCION_MATERIAL (id_tratamiento,id_intervencion,cod_material,cantidad_material) VALUES
+(1,1,'MAT-01',2),
+(2,2,'MAT-01',2),
+(2,2,'MAT-02',1),
+(3,3,'MAT-03',1),
+(1,4,'MAT-01',1),
+(2,5,'MAT-02',1)
+ON CONFLICT (id_tratamiento,id_intervencion,cod_material) DO NOTHING;
 
--- Auxiliar
-INSERT INTO AUXILIAR (dni, area_asignada) VALUES 
-('33333333C', 'Esterilización');
-
--- 2.3 TELÉFONOS PROFESIONALES (Multivaluado)
-INSERT INTO TELEFONO_PROFESIONAL (dni_profesional, telefono) VALUES 
-('11111111A', '600111222'), -- Móvil de Juan
-('11111111A', '910000001'), -- Fijo de Juan
-('22222222B', '600333444'); -- Móvil de Ana
-
-
--- BLOQUE 3: PACIENTES (Persona 1 - Necesarios para operar)
-
-INSERT INTO PACIENTE (dni, nombre, apellidos, fecha_nacimiento, email) VALUES 
-('99999999Z', 'Carlos', 'Cliente Paciente', '1990-05-20', 'carlos@mail.com'),
-('88888888Y', 'Marta', 'Asegurada Paciente', '1985-11-12', 'marta@mail.com');
-
-INSERT INTO TELEFONO_PACIENTE (dni_paciente, telefono) VALUES 
-('99999999Z', '666777888');
-
-
--- BLOQUE 4: OPERATIVA DIARIA (Integración de todo el grupo)
-
--- 4.1 CITA (Persona 1)
-INSERT INTO CITA (dni_paciente, fecha_hora, motivo, estado) VALUES 
-('99999999Z', '2025-10-20 10:00:00', 'Dolor de muelas', 'Realizada');
-
--- 4.2 INTERVENCIÓN (Persona 3 - Relación Triple)
--- Juan (Dentista) atiende a Carlos (Paciente) en el Box 1
-INSERT INTO INTERVENCION (nombre, tipo_intervencion, dni_profesional, dni_paciente, id_sala, fecha_hora) VALUES 
-('Cirugía de urgencia', 'Cirugía', '11111111A', '99999999Z', 1, '2025-10-20 10:05:00');
-
--- Recuperamos el ID de la intervención recién creada (Asumimos que es ID 1 si es la primera)
--- En un script real usaríamos subconsultas, pero para carga manual usamos el 1.
-
--- 4.3 TRATAMIENTOS APLICADOS
--- En esa intervención se hizo una Extracción (ID 4)
-INSERT INTO TRATAMIENTO_INTERVENCION (id_tratamiento, id_intervencion) VALUES 
-(4, 1);
-
--- 4.4 CONSUMO DE MATERIAL (Persona 2 - ¡Tu parte clave!)
--- En la extracción se gastó: 1 de Anestesia y 2 de Guantes
-INSERT INTO TRATAMIENTO_INTERVENCION_MATERIAL (id_tratamiento, id_intervencion, cod_material, cantidad_material) VALUES 
-(4, 1, 'MAT-ANEST', 1),
-(4, 1, 'MAT-GUANT', 2);
+-- CITAS FUTURAS (para agenda)
+INSERT INTO CITA (dni_paciente,fecha_hora,motivo,estado) VALUES
+('11111111A',CURRENT_TIMESTAMP + INTERVAL '3 hour','Revisión general','Pendiente'),
+('22222222B',CURRENT_TIMESTAMP + INTERVAL '1 day','Extracción','Pendiente'),
+('33333333C',CURRENT_TIMESTAMP + INTERVAL '2 day','Limpieza','Pendiente')
+ON CONFLICT DO NOTHING;
