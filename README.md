@@ -339,7 +339,7 @@ Este proyecto ha sido desarrollado como trabajo final de la asignatura de Admini
     </td>
     <td align="center">
       <a href="https://github.com/alu0101540153">
-        <img src="https://github.com/alu0101540153.png" width="100px;" alt="Daniel Marhuenda Guillen"/><br>
+        <img src="https://github.com/danielmarhuenda.png" width="100px;" alt="Daniel Marhuenda Guillen"/><br>
         <sub><b>Daniel Marhuenda Guillen</b></sub>
       </a>
     </td>
