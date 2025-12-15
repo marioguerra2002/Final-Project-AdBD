@@ -323,9 +323,28 @@ WHERE i.fecha_hora >= TIMESTAMP '2025-10-20 00:00:00'
 
 Este proyecto ha sido desarrollado como trabajo final de la asignatura de Administración de Bases de Datos (AdBD):
 
-- **Mario Guerra Pérez** - [GitHub](https://github.com/marioguerra2002)
-- **Víctor Rodríguez Dorta** - [GitHub](https://github.com/alu0101540153)
-- **Daniel Marhuenda Guillen** - [GitHub](https://github.com/alu0101540153)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/marioguerra2002">
+        <img src="https://github.com/marioguerra2002.png" width="100px;" alt="Mario Guerra Pérez"/><br>
+        <sub><b>Mario Guerra Pérez</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/alu0101540153">
+        <img src="https://github.com/alu0101540153.png" width="100px;" alt="Víctor Rodríguez Dorta"/><br>
+        <sub><b>Víctor Rodríguez Dorta</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/alu0101540153">
+        <img src="https://github.com/alu0101540153.png" width="100px;" alt="Daniel Marhuenda Guillen"/><br>
+        <sub><b>Daniel Marhuenda Guillen</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ##  Licencia
 
