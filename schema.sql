@@ -191,9 +191,9 @@ CREATE TABLE INTERVENCION (
     id_sala INT NOT NULL,
     fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
-    FOREIGN KEY (dni_profesional) REFERENCES PROFESIONAL(dni),
-    FOREIGN KEY (dni_paciente) REFERENCES PACIENTE(dni),
-    FOREIGN KEY (id_sala) REFERENCES SALA(id_sala)
+    FOREIGN KEY (dni_profesional) REFERENCES PROFESIONAL(dni) ON DELETE CASCADE,
+    FOREIGN KEY (dni_paciente) REFERENCES PACIENTE(dni) ON DELETE CASCADE,
+    FOREIGN KEY (id_sala) REFERENCES SALA(id_sala) ON DELETE CASCADE
 );
 
 -- Tabla intermedia: tratamiento - intervención (N:M)
@@ -203,8 +203,8 @@ CREATE TABLE TRATAMIENTO_INTERVENCION (
     id_intervencion INT NOT NULL,
     
     PRIMARY KEY (id_tratamiento, id_intervencion),
-    FOREIGN KEY (id_tratamiento) REFERENCES TRATAMIENTO(id_tratamiento),
-    FOREIGN KEY (id_intervencion) REFERENCES INTERVENCION(id_intervencion)
+    FOREIGN KEY (id_tratamiento) REFERENCES TRATAMIENTO(id_tratamiento) ON DELETE CASCADE,
+    FOREIGN KEY (id_intervencion) REFERENCES INTERVENCION(id_intervencion) ON DELETE CASCADE
 );
 
 -- Tabla intermedia: tratamiento - intervención - material (N:M)
@@ -257,3 +257,52 @@ CREATE TABLE TRATAMIENTO_ENCARGO (
     FOREIGN KEY (id_tratamiento) REFERENCES TRATAMIENTO(id_tratamiento),
     FOREIGN KEY (id_encargo) REFERENCES ENCARGO(id_encargo)
 );
+
+
+-- Función que actualiza el stock de material
+CREATE OR REPLACE FUNCTION actualizar_stock_material()
+RETURNS TRIGGER AS $$
+DECLARE
+    stock_actual INT;
+    lote_record RECORD;  -- <--- IMPORTANTE: debe ser RECORD
+BEGIN
+    -- Obtenemos la cantidad total disponible del material
+    SELECT SUM(cantidad_actual) INTO stock_actual
+    FROM LOTE
+    WHERE cod_material = NEW.cod_material;
+
+    -- Si no hay suficiente stock, abortamos
+    IF stock_actual < NEW.cantidad_material THEN
+        RAISE EXCEPTION 'No hay suficiente stock del material %', NEW.cod_material;
+    END IF;
+
+    -- Descontamos la cantidad usada de los lotes, empezando por el más antiguo
+    FOR lote_record IN 
+        SELECT id_lote, cantidad_actual
+        FROM LOTE
+        WHERE cod_material = NEW.cod_material AND cantidad_actual > 0
+        ORDER BY fecha_entrada
+    LOOP
+        IF lote_record.cantidad_actual >= NEW.cantidad_material THEN
+            UPDATE LOTE
+            SET cantidad_actual = cantidad_actual - NEW.cantidad_material
+            WHERE id_lote = lote_record.id_lote;
+            EXIT; -- Ya descontamos todo
+        ELSE
+            -- Si el lote no tiene suficiente, lo vaciamos y seguimos con el siguiente
+            NEW.cantidad_material := NEW.cantidad_material - lote_record.cantidad_actual;
+            UPDATE LOTE
+            SET cantidad_actual = 0
+            WHERE id_lote = lote_record.id_lote;
+        END IF;
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_actualizar_stock
+BEFORE INSERT ON TRATAMIENTO_INTERVENCION_MATERIAL
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_stock_material();
+
