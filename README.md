@@ -1,4 +1,4 @@
-# 🏥 Sistema de Gestión de Clínica Dental
+#  Sistema de Gestión de Clínica Dental
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
@@ -7,41 +7,10 @@
 
 Sistema integral de gestión para clínicas dentales desarrollado con Flask y PostgreSQL. Proporciona una API REST completa para gestionar pacientes, profesionales, citas, intervenciones, tratamientos y materiales.
 
-## 📋 Tabla de Contenidos
+##  Tabla de Contenidos
 
-- [🏥 Sistema de Gestión de Clínica Dental](#-sistema-de-gestión-de-clínica-dental)
-  - [📋 Tabla de Contenidos](#-tabla-de-contenidos)
-  - [✨ Características](#-características)
-  - [🏗️ Arquitectura](#️-arquitectura)
-    - [Tecnologías Utilizadas](#tecnologías-utilizadas)
-  - [📦 Requisitos Previos](#-requisitos-previos)
-  - [🚀 Instalación](#-instalación)
-    - [1. Clonar el Repositorio](#1-clonar-el-repositorio)
-    - [2. Crear y Activar Entorno Virtual](#2-crear-y-activar-entorno-virtual)
-    - [3. Instalar Dependencias](#3-instalar-dependencias)
-  - [🗄️ Configuración de la Base de Datos](#️-configuración-de-la-base-de-datos)
-    - [4. Crear la Base de Datos y Usuario](#4-crear-la-base-de-datos-y-usuario)
-    - [5. Crear el Esquema](#5-crear-el-esquema)
-    - [6. Cargar Datos de Ejemplo (Opcional)](#6-cargar-datos-de-ejemplo-opcional)
-    - [7. Configurar Conexión](#7-configurar-conexión)
-  - [💻 Uso](#-uso)
-    - [Iniciar el Servidor Flask](#iniciar-el-servidor-flask)
-    - [Probar la API](#probar-la-api)
-  - [🔌 Endpoints de la API](#-endpoints-de-la-api)
-    - [Pacientes](#pacientes)
-    - [Profesionales](#profesionales)
-    - [Intervenciones](#intervenciones)
-    - [Ejemplo de Request: Crear Intervención](#ejemplo-de-request-crear-intervención)
-  - [📁 Estructura del Proyecto](#-estructura-del-proyecto)
-  - [📊 Diagramas](#-diagramas)
-    - [Herramienta de Diseño](#herramienta-de-diseño)
-  - [🔍 Consultas de Ejemplo](#-consultas-de-ejemplo)
-  - [👥 Autores](#-autores)
-  - [📝 Licencia](#-licencia)
-  - [🆘 Soporte](#-soporte)
-  - [🔜 Mejoras Futuras](#-mejoras-futuras)
-
-## ✨ Características
+- [ Sistema de Gestión de Clínica Dental]
+##  Características
 
 - **Gestión de Pacientes**: CRUD completo de pacientes con información personal y de contacto
 - **Gestión de Profesionales**: Control de dentistas, higienistas y auxiliares
@@ -53,7 +22,7 @@ Sistema integral de gestión para clínicas dentales desarrollado con Flask y Po
 - **Historial Clínico**: Consulta completa del historial de pacientes
 - **Agenda Profesional**: Visualización de citas e intervenciones por profesional
 
-## 🏗️ Arquitectura
+##  Arquitectura
 
 El sistema está construido sobre una arquitectura de 3 capas:
 
@@ -70,7 +39,7 @@ El sistema está construido sobre una arquitectura de 3 capas:
 - **Arquitectura API**: RESTful
 - **Diseño de Diagramas**: Draw.io - Herramienta para modelado ER y esquemas de base de datos
 
-## 📦 Requisitos Previos
+##  Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalado:
 
@@ -80,7 +49,7 @@ Antes de comenzar, asegúrate de tener instalado:
 - **pip** - Gestor de paquetes de Python para instalar Flask y dependencias
 - **Draw.io** (opcional) - Solo si deseas editar los diagramas del proyecto
 
-## 🚀 Instalación
+##  Instalación
 
 ### 1. Clonar el Repositorio
 
@@ -136,7 +105,7 @@ pip install -r requirements.txt
 deactivate
 ```
 
-## 🗄️ Configuración de la Base de Datos
+##  Configuración de la Base de Datos
 
 ### 4. Crear la Base de Datos y Usuario
 
@@ -182,7 +151,7 @@ def get_db_connection():
     )
 ```
 
-## 💻 Uso
+##  Uso
 
 ### Iniciar el Servidor Flask
 
@@ -232,7 +201,7 @@ curl -X POST http://localhost:5000/patients \
   }'
 ```
 
-## 🔌 Endpoints de la API
+##  Endpoints de la API
 
 ### Pacientes
 
@@ -279,7 +248,7 @@ POST /operaciones/nueva_intervencion
 }
 ```
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 Final-Project-AdBD/
@@ -298,7 +267,7 @@ Final-Project-AdBD/
 
 **Nota:** La carpeta `venv/` contiene el entorno virtual y no debe subirse al repositorio (añadida en `.gitignore`).
 
-## 📊 Diagramas
+##  Diagramas
 
 El proyecto incluye diagramas diseñados con **Draw.io** en la carpeta `diagrams/`:
 
@@ -315,7 +284,7 @@ Los diagramas se han creado con [Draw.io](https://app.diagrams.net/), una herram
 
 Para editar los diagramas, importa los archivos `.png` directamente en Draw.io, ya que contienen la información del diagrama embebida.
 
-## 🔍 Consultas de Ejemplo
+##  Consultas de Ejemplo
 
 El archivo `consultas_ejemplo.sql` contiene consultas útiles como:
 
@@ -358,30 +327,8 @@ Este proyecto ha sido desarrollado como trabajo final de la asignatura de Admini
 - **Víctor Rodríguez Dorta** - [GitHub](https://github.com/alu0101540153)
 - **Daniel Marhuenda Guillen** - [GitHub](https://github.com/alu0101540153)
 
-## 📝 Licencia
+##  Licencia
 
 Este proyecto es software educativo desarrollado para la asignatura de Administración de Bases de Datos.
 
----
-
-## 🆘 Soporte
-
-Si encuentras algún problema o tienes alguna pregunta:
-
-1. Revisa la documentación en este README
-2. Consulta el archivo `consultas_ejemplo.sql` para ver ejemplos de uso
-3. Abre un issue en GitHub
-
-## 🔜 Mejoras Futuras
-
-- [ ] Implementar autenticación y autorización
-- [ ] Añadir paginación a los endpoints
-- [ ] Implementar búsqueda avanzada de pacientes
-- [ ] Añadir validaciones más robustas
-- [ ] Implementar sistema de notificaciones
-- [ ] Crear interfaz web (frontend)
-- [ ] Añadir documentación con Swagger/OpenAPI
-- [ ] Implementar tests unitarios y de integración
-
----
 
